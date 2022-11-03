@@ -42,6 +42,7 @@ def createHBVLightDataSet(df, fn, type, name):
     print(gauge)
     name = name.replace(" ", "_")
     name = name.replace("\n", "")
+    name = name.replace("/", "-")
 
     filepath = Path(gauge + '-' + name + '-' + type + '/data/')
     filepath.parent.mkdir(parents=True, exist_ok=True)
