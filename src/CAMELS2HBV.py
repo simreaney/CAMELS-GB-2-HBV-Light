@@ -47,29 +47,18 @@ def createHBVLightDataSet(df, fn, type, name):
     filepath.parent.mkdir(parents=True, exist_ok=True)
     os.makedirs(filepath, exist_ok=True)
 
-
-
     df["date"] = pd.to_datetime(df['date'], format='%Y-%m-%d')
 
     #make the daily mean pet and precip files
     df['DOY'] = df['date'].dt.dayofyear
     DOY = df.groupby(['DOY']).mean()
     DOY = DOY.drop([366, 366])
-
     DOY['pet'].to_csv(str(filepath) + '/evap.txt', index=False)
     DOY['temperature'].to_csv(str(filepath) + '/temp.txt', index=False)
 
     # Create the PTQ.txt file
     ptq = df.drop(columns=['discharge_vol', 'pet', 'peti','humidity','shortwave_rad','longwave_rad','windspeed','DOY'])
     ptq["date"] = pd.to_datetime(ptq["date"]).dt.strftime('%Y%m%d')
-    # ptq.to_csv(fnElements[4] + '.csv', index=False, sep=" ")
-
-    # npPTQ = ptq.to_numpy()
-    # print (npPTQ.dtypes)
-
-
     ptq.to_csv(str(filepath) + '/ptq.txt', index=False, sep="\t")
-
-    # np.savetxt('np.txt', npPTQ, fmt='%.2f', delimiter=',')
 
 main()
